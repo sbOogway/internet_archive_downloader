@@ -2,3 +2,5 @@
 *.png
 *.jpg
 Codici_*
+
+.env

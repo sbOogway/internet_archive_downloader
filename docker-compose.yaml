@@ -1,0 +1,15 @@
+services:
+  internet-archive-downloader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_DIR: /usr/src/app
+    env_file:
+      - .env
+    image: internet-archive-downloader:latest
+    volumes:
+      - books:/books
+
+volumes:
+  books:

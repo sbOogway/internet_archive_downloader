@@ -210,8 +210,9 @@ def make_pdf(pdf, title, directory):
 if __name__ == "__main__":
 
 	my_parser = argparse.ArgumentParser()
-	my_parser.add_argument('-e', '--email', help='Your archive.org email', type=str, required=True)
-	my_parser.add_argument('-p', '--password', help='Your archive.org password', type=str, required=True)
+	# now we pass it from .env file
+	# my_parser.add_argument('-e', '--email', help='Your archive.org email', type=str, required=True)
+	# my_parser.add_argument('-p', '--password', help='Your archive.org password', type=str, required=True)
 	my_parser.add_argument('-u', '--url', help='Link to the book (https://archive.org/details/XXXX). You can use this argument several times to download multiple books', action='append', type=str)
 	my_parser.add_argument('-d', '--dir', help='Output directory', type=str)
 	my_parser.add_argument('-f', '--file', help='File where are stored the URLs of the books to download', type=str)
@@ -228,8 +229,14 @@ if __name__ == "__main__":
 	if args.url is None and args.file is None:
 		my_parser.error("At least one of --url and --file required")
 
-	email = args.email
-	password = args.password
+	email = os.getenv("INTERNET_ARCHIVE_EMAIL")
+	password = os.getenv("INTERNET_ARCHIVE_PASSWORD")
+
+
+	print(os.environ)
+	print("email", email)
+	print("pass", password)
+
 	scale = args.resolution
 	n_threads = args.threads
 	d = args.dir
@@ -254,7 +261,9 @@ if __name__ == "__main__":
 	for url in urls:
 		if not url.startswith("https://archive.org/details/"):
 			print(f"{url} --> Invalid url. URL must starts with \"https://archive.org/details/\"")
+			
 			exit()
+		print(url)
 
 	print(f"{len(urls)} Book(s) to download")
 	session = login(email, password)
@@ -317,7 +326,8 @@ if __name__ == "__main__":
 			pdfmeta['keywords'] = [f"https://archive.org/details/{book_id}"]
 
 			pdf = img2pdf.convert(images, **pdfmeta)
-			make_pdf(pdf, title, args.dir if args.dir != None else "")
+			# output file to container volume
+			make_pdf(pdf, title, "/books") # args.dir if args.dir != None else "")
 			try:
 				shutil.rmtree(directory)
 			except OSError as e:
