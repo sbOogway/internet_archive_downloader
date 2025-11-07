@@ -7,7 +7,7 @@ services:
         APP_DIR: /usr/src/app
     env_file:
       - .env
-    image: internet-archive-downloader:latest
+    image: ghcr.io/sboogway/internet-archive-downloader:latest
     volumes:
       - books:/books
 
