@@ -15,6 +15,10 @@ import hashlib
 from Crypto.Cipher import AES
 from Crypto.Util import Counter
 
+# from dotenv import load_dotenv
+
+# # Carica le variabili dal file .env
+# load_dotenv()
 
 def display_error(response, message):
     print(message)
@@ -54,18 +58,24 @@ async def login(email, password):
     playwright_cookies = None
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
+
         await page.goto("https://archive.org/login")
 
-        await page.wait_for_selector("#email-input", state="visible")
+        await asyncio.sleep(3)
+
+        # await page.wait_for_selector("#email-input", state="visible")
 
         await page.fill("#email-input", email)
         await page.fill("#password-input", password)
         await page.keyboard.press("Enter")
 
+
+
         await asyncio.sleep(3)
+        
 
         playwright_cookies = await context.cookies()
 
@@ -294,6 +304,8 @@ async def main():
         action="store_true",
     )
 
+    os.makedirs("books", exist_ok=True)
+    
     if len(sys.argv) == 1:
         my_parser.print_help(sys.stderr)
         sys.exit(1)

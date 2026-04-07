@@ -1,19 +1,5 @@
 ![made-with-python](https://img.shields.io/badge/Made%20with-Python3-brightgreen)
 
-<!-- LOGO -->
-<br />
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/54740007/108192715-e5958c80-7114-11eb-8240-e884895bb45f.png" alt="Logo" width="80" height="80">
-
-  <h3 align="center">Archive.org-Downloader</h3>
-
-  <p align="center">
-    Python3 script to download archive.org books in PDF format
-    <br />
-    </p>
-</p>
-
-
 ## About The Project
 
 There are many great books available on https://openlibrary.org/ and https://archive.org/, however, you can only borrow them for 1 hour to 14 days and you don't have the option to download it as a PDF to read it offline or share it with your friends. I created this program to solve this problem and retrieve the original book in pdf format for FREE!
@@ -34,17 +20,15 @@ The script requires the modules `requests`, `tqdm` and `img2pdf`, you can instal
 ```sh
 pip install -r requirements.txt
 ```
+
+email and passowrds are passed throught env variables.
    
 ## Usage
 ```sh
-usage: archive-org-downloader.py [-h] -e EMAIL -p PASSWORD [-u URL] [-d DIR] [-f FILE] [-r RESOLUTION] [-t THREADS] [-j]
+usage: archive-org-downloader.py [-h] [-u URL] [-d DIR] [-f FILE] [-r RESOLUTION] [-t THREADS] [-j]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -e EMAIL, --email EMAIL
-                        Your archive.org email
-  -p PASSWORD, --password PASSWORD
-                        Your archive.org password
   -u URL, --url URL     Link to the book (https://archive.org/details/XXXX). You can use this argument several times
                         to download multiple books
   -d DIR, --dir DIR     Output directory
@@ -71,9 +55,7 @@ If you want to download a lot of books, you can paste the urls of the books in a
 python3 archive-org-downloader.py -e myemail@tempmail.com -p Passw0rd --file books_to_download.txt
 ```
 
-## Donation
-If you want to support my work, you can send 2 or 3 Bitcoins 🙃 to this address: 
+#### docker
+```docker
+docker run --env-file .env --rm -v ./books:/app/books  iadl:0.1.0 uv run archive-org-downloader.py -u https://archive.org/details/careofsoulguid00moor
 ```
-bc1q4nq8tjuezssy74d5amnrrq6ljvu7hd3l880m7l
-```
-![bitcoin_address](https://user-images.githubusercontent.com/54740007/169100171-1061c7a0-207e-459b-84de-2d6bb93b0f38.png)
